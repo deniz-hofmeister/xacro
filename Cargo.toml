@@ -2,5 +2,8 @@
 name = "xacro"
 version = "0.1.0"
 edition = "2021"
+description = "A xml preprocessor for xacro files to generate URDF files"
+license = "MIT"
+repository = "https://github.com/deniz-hofmeister/xacro"
 
 [dependencies]
