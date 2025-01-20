@@ -1,0 +1,6 @@
+<robot name="my_robot">
+  <joint name="joint_dyn" type="fixed">
+    <parent link="link1"/>
+    <child link="link2"/>
+  </joint>
+</robot>

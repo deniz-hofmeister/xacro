@@ -1,0 +1,6 @@
+<xacro:property name="has_extra_link" value="true"/>
+
+<!-- Conditionally include a link -->
+<xacro:if value="${has_extra_link}">
+  <link name="extra_link"/>
+</xacro:if>

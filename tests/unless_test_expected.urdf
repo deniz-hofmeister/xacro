@@ -1,0 +1,3 @@
+<robot name="my_robot">
+  <!-- nothing included, because omit_this_link was true -->
+</robot>
