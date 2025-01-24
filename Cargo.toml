@@ -7,4 +7,6 @@ license = "MIT"
 repository = "https://github.com/deniz-hofmeister/xacro"
 
 [dependencies]
-roxmltree = "*"
+xml = "*"
+xmltree = "*"
+thiserror = "*"
