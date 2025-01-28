@@ -1,6 +1,4 @@
-use crate::error::XacroError;
-use crate::features::*;
-use crate::types::xml::XmlElement;
+use crate::{error::XacroError, features::*};
 
 pub struct XacroProcessor {
     macros: macro_::MacroProcessor,
@@ -20,7 +18,10 @@ impl XacroProcessor {
         }
     }
 
-    pub fn process_file<P: AsRef<std::path::Path>>(&self, path: P) -> Result<String, XacroError> {
+    pub fn process_file<P: AsRef<std::path::Path>>(
+        &self,
+        path: P,
+    ) -> Result<String, XacroError> {
         let xml = self.parse_file(path)?;
 
         // 2. Process features in order

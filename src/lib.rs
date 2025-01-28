@@ -13,7 +13,6 @@ pub use processor::XacroProcessor;
 
 // Re-export commonly used types
 pub use error::XacroError;
-pub use types::xml::XmlElement;
 
 /// Main entry point for processing xacro files
 pub fn process_file<P: AsRef<std::path::Path>>(path: P) -> Result<String, XacroError> {
