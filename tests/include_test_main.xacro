@@ -1,8 +1,0 @@
-<!-- Include a second file that defines a link -->
-<xacro:include filename="include_test_included.xacro"/>
-
-<!-- Optionally add something else here -->
-<joint name="joint1" type="fixed">
-  <parent link="included_link"/>
-  <child link="extra_link"/>
-</joint>

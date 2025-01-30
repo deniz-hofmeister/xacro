@@ -11,4 +11,7 @@ pub enum XacroError {
 
     #[error("Macro error: {0}")]
     Macro(String),
+
+    #[error("XML write error: {0}")]
+    XmlWrite(#[from] xmltree::Error),
 }

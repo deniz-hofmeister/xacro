@@ -1,9 +1,0 @@
-<!-- Suppose we want to create a joint dynamically with a chosen name -->
-<xacro:macro name="joint_element" params="joint_name parent_link child_link">
-    <xacro:element xacro:name="joint" name="${joint_name}" type="fixed">
-      <parent link="${parent_link}"/>
-      <child link="${child_link}"/>
-    </xacro:element>
-</xacro:macro>
-
-<xacro:joint_element joint_name="joint_dyn" parent_link="link1" child_link="link2"/>

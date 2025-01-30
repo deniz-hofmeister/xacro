@@ -1,9 +1,9 @@
-pub mod condition;
-pub mod element;
-pub mod include;
-pub mod loop_;
-pub mod macro_;
-pub mod property;
+pub mod conditions;
+pub mod elements;
+pub mod includes;
+pub mod loops;
+pub mod macros;
+pub mod properties;
 
 use crate::error::XacroError;
 use xmltree::Element;
