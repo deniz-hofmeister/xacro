@@ -1,9 +1,10 @@
 use crate::error::XacroError;
 use xmltree::Element;
 
-pub struct LoopProcessor {}
+pub struct ElementsProcessor {}
 
-impl LoopProcessor {
+impl ElementsProcessor {
+    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         Self {}
     }

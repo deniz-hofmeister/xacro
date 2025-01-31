@@ -1,6 +1,0 @@
-<xacro:property name="omit_this_link" value="true"/>
-
-<!-- 'unless' means only include if the expression is false -->
-<xacro:unless value="${omit_this_link}">
-  <link name="unwanted_link"/>
-</xacro:unless>

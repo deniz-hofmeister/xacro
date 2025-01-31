@@ -1,9 +1,12 @@
+mod cases;
+
 use crate::error::XacroError;
 use xmltree::Element;
 
 pub struct MacroProcessor {}
 
 impl MacroProcessor {
+    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         Self {}
     }
@@ -15,3 +18,6 @@ impl MacroProcessor {
         Ok(xml)
     }
 }
+
+#[cfg(test)]
+mod tests;

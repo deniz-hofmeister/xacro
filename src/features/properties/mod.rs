@@ -1,9 +1,10 @@
 use crate::error::XacroError;
 use xmltree::Element;
 
-pub struct ConditionProcessor {}
+pub struct PropertyProcessor {}
 
-impl ConditionProcessor {
+impl PropertyProcessor {
+    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         Self {}
     }

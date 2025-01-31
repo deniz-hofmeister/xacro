@@ -1,5 +1,0 @@
-<robot name="my_robot">
-  <link name="linkA"/>
-  <link name="linkB"/>
-  <link name="linkC"/>
-</robot>

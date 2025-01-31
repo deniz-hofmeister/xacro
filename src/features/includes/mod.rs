@@ -4,6 +4,7 @@ use xmltree::Element;
 pub struct IncludeProcessor {}
 
 impl IncludeProcessor {
+    #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         Self {}
     }

@@ -1,7 +1,0 @@
-<!-- Define a list of link names -->
-<xacro:property name="link_names" value="linkA linkB linkC"/>
-
-<!-- Loop to create multiple links -->
-<xacro:loop var="lname" range="${link_names}">
-  <link name="${lname}"/>
-</xacro:loop>
