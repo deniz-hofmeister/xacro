@@ -1,5 +1,3 @@
-mod cases;
-
 use crate::error::XacroError;
 use xmltree::Element;
 

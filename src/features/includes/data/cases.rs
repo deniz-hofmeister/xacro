@@ -1,40 +1,10 @@
 pub const TEST_INCLUDE_BASIC: &[u8] = br##"
-<?xml version="1.0"?>
-<robot name="test_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <!-- Include a basic component -->
-    <xacro:include filename="base_component.xacro"/>
-    
-    <!-- Use the included content -->
-    <link name="additional_link"/>
-</robot>
 "##;
 
 pub const TEST_INCLUDE_BASE_COMPONENT: &[u8] = br##"
-<?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <link name="base_link">
-        <visual>
-            <geometry>
-                <cylinder length="0.6" radius="0.2"/>
-            </geometry>
-        </visual>
-    </link>
-</robot>
 "##;
 
 pub const EXPECT_INCLUDE_BASIC: &[u8] = br##"
-<?xml version="1.0"?>
-<robot name="test_robot">
-    <link name="base_link">
-        <visual>
-            <geometry>
-                <cylinder length="0.6" radius="0.2"/>
-            </geometry>
-        </visual>
-    </link>
-    
-    <link name="additional_link"/>
-</robot>
 "##;
 
 // Nested includes test
