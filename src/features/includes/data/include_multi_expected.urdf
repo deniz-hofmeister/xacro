@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<robot name="test_robot">
+    <link name="wheel_front_right"/>
+    <link name="wheel_front_left"/>
+    <link name="arm_left_link"/>
+    <link name="arm_right_link"/>
+</robot>

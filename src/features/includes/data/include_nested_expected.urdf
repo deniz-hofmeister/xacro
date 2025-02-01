@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<robot name="test_robot">
+    <link name="arm_base"/>
+    <link name="arm_link_1"/>
+    <link name="hand_base"/>
+    <link name="hand_finger_1"/>
+    <link name="hand_finger_2"/>
+</robot>
