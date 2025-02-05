@@ -16,3 +16,6 @@ impl IncludeProcessor {
         Ok(xml)
     }
 }
+
+#[cfg(test)]
+mod tests;
