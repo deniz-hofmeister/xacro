@@ -33,7 +33,7 @@ impl XacroProcessor {
         let xml = XacroProcessor::parse_file(&path)?;
 
         // 2. Process features in order
-        let xml = self.includes.process(xml)?;
+        let xml = self.includes.process(xml, path.as_ref())?;
         let xml = self.properties.process(xml)?;
         let xml = self.macros.process(xml)?;
         let xml = self.conditions.process(xml)?;

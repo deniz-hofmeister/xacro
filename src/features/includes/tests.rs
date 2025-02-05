@@ -1,13 +1,20 @@
 #[cfg(test)]
 mod macro_tests {
-    use crate::{features::macros::MacroProcessor, XacroProcessor};
+    use crate::{features::includes::IncludeProcessor, XacroProcessor};
+    use std::path::Path;
     #[test]
     fn test_include_basic() {
-        let macro_processor = MacroProcessor::new();
-        let data = XacroProcessor::parse_file("tests/data/include_base.xacro").unwrap();
-        let expected = XacroProcessor::parse_file("tests/data/include_base_expected.urdf").unwrap();
+        let macro_processor = IncludeProcessor::new();
+        let path = Path::new("tests/data/include_test.xacro");
+        let data = XacroProcessor::parse_file(path).unwrap();
+        let expected =
+            XacroProcessor::parse_file("tests/data/include_test_expected.xacro").unwrap();
 
-        let result = macro_processor.process(data);
+        let result = macro_processor.process(data, path);
+
+        if result.is_err() {
+            println!("{:?}", result);
+        }
 
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), expected);
