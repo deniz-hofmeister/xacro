@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <robot name="test_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:include filename="include_multi_wheels.xacro"/>
-    <xacro:include filename="include_multi_arms.xacro"/>
+  <xacro:include filename="include_test_multi_wheels.xacro"/>
+  <xacro:include filename="include_test_multi_arms.xacro"/>
 </robot>
