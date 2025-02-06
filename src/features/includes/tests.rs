@@ -57,4 +57,22 @@ mod macro_tests {
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), expected);
     }
+
+    #[test]
+    fn test_include_directory() {
+        let macro_processor = IncludeProcessor::new();
+        let path = Path::new("tests/data/include_test_directory.xacro");
+        let data = XacroProcessor::parse_file(path).unwrap();
+        let expected =
+            XacroProcessor::parse_file("tests/data/include_test_directory_expected.xacro").unwrap();
+
+        let result = macro_processor.process(data, path);
+
+        if result.is_err() {
+            println!("{:?}", result);
+        }
+
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), expected);
+    }
 }
