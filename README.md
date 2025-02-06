@@ -27,5 +27,6 @@ Fundamentally these feel like scope creep or nice-to-haves
 The following shall not be implemented:
 - [ ] Python-based evaluation
 - [ ] rospack-based evaluation
+- [ ] Windows compatibility
 
 Because this package is meant to be as dependency free as possible, so no python or ros dependencies.
