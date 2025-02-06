@@ -29,4 +29,7 @@ The following shall not be implemented:
 - [ ] Rospack-based evaluation
 - [ ] Windows compatibility
 
+If needed, the following alternative can be developed
+- [ ] Rust-based evaluation / mathematical expressions, to match the python evaluation
+
 Because this package is meant to be as dependency free as possible, so no python or ros dependencies.
