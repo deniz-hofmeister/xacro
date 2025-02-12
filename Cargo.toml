@@ -10,6 +10,7 @@ repository = "https://github.com/deniz-hofmeister/xacro"
 xml = "*"
 xmltree = "*"
 thiserror = "*"
+hashbrown = "*"
 
 [dev-dependencies]
 log = "*"
