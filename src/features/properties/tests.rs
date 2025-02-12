@@ -8,7 +8,7 @@ mod property_tests {
     fn test_property_basic() {
         env_logger::try_init().ok();
         let property_processor = PropertyProcessor::new();
-        let path = Path::new("tests/data/property_test_base.xacro");
+        let path = Path::new("tests/data/property_test.xacro");
         let data = XacroProcessor::parse_file(path).unwrap();
         let expected =
             XacroProcessor::parse_file("tests/data/property_test_expected.xacro").unwrap();
@@ -31,6 +31,46 @@ mod property_tests {
         let data = XacroProcessor::parse_file(path).unwrap();
         let expected =
             XacroProcessor::parse_file("tests/data/property_test_nested_expected.xacro").unwrap();
+
+        let result = property_processor.process(data);
+
+        if result.is_err() {
+            error!("{:?}", result);
+        }
+
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), expected);
+    }
+
+    #[test]
+    fn test_property_multiple() {
+        env_logger::try_init().ok();
+        let property_processor = PropertyProcessor::new();
+        let path = Path::new("tests/data/property_test_multiple.xacro");
+        let data = XacroProcessor::parse_file(path).unwrap();
+        let expected =
+            XacroProcessor::parse_file("tests/data/property_test_multiple_expected.xacro").unwrap();
+
+        let result = property_processor.process(data);
+
+        if result.is_err() {
+            error!("{:?}", result);
+        }
+
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), expected);
+    }
+
+    #[test]
+    fn test_property_multiple_out_of_order() {
+        env_logger::try_init().ok();
+        let property_processor = PropertyProcessor::new();
+        let path = Path::new("tests/data/property_test_multiple_out_of_order.xacro");
+        let data = XacroProcessor::parse_file(path).unwrap();
+        let expected = XacroProcessor::parse_file(
+            "tests/data/property_test_multiple_out_of_order_expected.xacro",
+        )
+        .unwrap();
 
         let result = property_processor.process(data);
 

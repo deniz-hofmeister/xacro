@@ -1,0 +1,7 @@
+<robot name="test_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+ <xacro:property name="base" value="0.5"/>
+ <xacro:property name="factor" value="2"/>
+ <xacro:property name="doubled" value="${base}"/>
+ <xacro:property name="computed" value="${factor}"/>
+ <box size="${doubled} ${computed}"/>
+</robot>
