@@ -81,4 +81,45 @@ mod property_tests {
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), expected);
     }
+
+    #[test]
+    fn test_property_attributes() {
+        env_logger::try_init().ok();
+        let property_processor = PropertyProcessor::new();
+        let path = Path::new("tests/data/property_test_attributes.xacro");
+        let data = XacroProcessor::parse_file(path).unwrap();
+        let expected =
+            XacroProcessor::parse_file("tests/data/property_test_attributes_expected.xacro")
+                .unwrap();
+
+        let result = property_processor.process(data);
+
+        if result.is_err() {
+            error!("{:?}", result);
+        }
+
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), expected);
+    }
+
+    #[test]
+    fn test_property_multi_substitution() {
+        env_logger::try_init().ok();
+        let property_processor = PropertyProcessor::new();
+        let path = Path::new("tests/data/property_test_multi_substitution.xacro");
+        let data = XacroProcessor::parse_file(path).unwrap();
+        let expected = XacroProcessor::parse_file(
+            "tests/data/property_test_multi_substitution_expected.xacro",
+        )
+        .unwrap();
+
+        let result = property_processor.process(data);
+
+        if result.is_err() {
+            error!("{:?}", result);
+        }
+
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), expected);
+    }
 }
