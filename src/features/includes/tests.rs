@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod macro_tests {
+mod include_tests {
     use crate::{features::includes::IncludeProcessor, XacroProcessor};
     use log::error;
     use std::path::Path;
@@ -59,7 +59,7 @@ mod macro_tests {
     }
 
     #[test]
-    fn test_include_directory() {
+    fn test_include_subdirectory() {
         let macro_processor = IncludeProcessor::new();
         let path = Path::new("tests/data/include_test_directory.xacro");
         let data = XacroProcessor::parse_file(path).unwrap();
