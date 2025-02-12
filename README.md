@@ -8,9 +8,9 @@ Reference: https://github.com/ros/xacro/wiki
 ## TODO
 The following functionality shall be implemented:
 - [ ] macro
-- [ ] include
+- [X] include
 - [ ] insert_block
-- [ ] property
+- [X] property
 - [ ] element
 - [ ] if
 - [ ] unless
