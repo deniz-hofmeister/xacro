@@ -1,0 +1,6 @@
+<robot>
+ <xacro:property name="width" value="0.5"/>
+ <xacro:property name="height" value="1.0"/>
+ <xacro:property name="depth" value="0.3"/>
+ <box size="${width} ${height} ${depth}"/>
+</robot>

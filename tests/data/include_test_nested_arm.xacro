@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <link name="arm_base"/>
-    <link name="arm_link_1"/>
-    <xacro:include filename="include_test_nested_hand.xacro"/>
+ <link name="arm_base"/>
+ <link name="arm_link_1"/>
+ <xacro:include filename="include_test_nested_hand.xacro"/>
 </robot>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <link name="hand_base"/>
-    <link name="hand_finger_1"/>
-    <link name="hand_finger_2"/>
+ <link name="hand_base"/>
+ <link name="hand_finger_1"/>
+ <link name="hand_finger_2"/>
 </robot>

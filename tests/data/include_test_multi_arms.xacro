@@ -1,4 +1,4 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <link name="arm_left_link"/>
-    <link name="arm_right_link"/>
+ <link name="arm_left_link"/>
+ <link name="arm_right_link"/>
 </robot>
