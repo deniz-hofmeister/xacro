@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <robot name="test_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
- <xacro:include filename="include_test_nested_arm.xacro"/>
+ <elem value="prefix_first_middle_second_suffix"/>
 </robot>
