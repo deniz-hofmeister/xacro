@@ -1,5 +1,6 @@
 use crate::{
     error::XacroError,
+    features::properties::PropertyProcessor,
     utils::{pretty_print_hashmap, pretty_print_xml},
 };
 use std::collections::HashMap;
@@ -46,7 +47,7 @@ impl MacroProcessor {
         element: &Element,
         macros: &mut HashMap<String, MacroDefinition>,
     ) -> Result<(), XacroError> {
-        if element.name == "macro" {
+        if Self::is_macro_definition(element) {
             if let (Some(name), Some(params)) = (
                 element.attributes.get("name"),
                 element.attributes.get("params"),
@@ -118,30 +119,14 @@ impl MacroProcessor {
         Ok(())
     }
 
-    fn is_macro_call(element: &Element) -> bool {
-        element.prefix.as_ref().is_some_and(|x| x == "xacro") && !element.name.eq("macro")
-    }
-
-    fn is_macro_definition(element: &Element) -> bool {
-        element.prefix.as_ref().is_some_and(|x| x == "xacro") && element.name.eq("macro")
-    }
-
-    fn get_macro_name(element: &Element) -> Result<String, XacroError> {
-        Ok(element.name.clone())
-    }
-
-    fn collect_macro_args(element: &Element) -> Result<HashMap<String, String>, XacroError> {
-        Ok(element.attributes.clone())
-    }
-
     fn expand_macro_content(
         macro_def: &MacroDefinition,
         args: &HashMap<String, String>,
     ) -> Result<Element, XacroError> {
-        let content = macro_def.content.clone();
+        let mut content = macro_def.content.clone();
 
-        for (param_name, default_value) in &macro_def.params {
-            if !args.contains_key(param_name) && default_value.is_none() {
+        for param_name in args.keys() {
+            if !macro_def.params.contains_key(param_name) {
                 return Err(XacroError::MissingParameter {
                     macro_name: content.name.clone(),
                     param: param_name.clone(),
@@ -162,6 +147,8 @@ impl MacroProcessor {
             substitutions.insert(param_name.clone(), value);
         }
 
+        PropertyProcessor::substitute_properties(&mut content, &substitutions)?;
+
         Ok(content)
     }
 
@@ -176,6 +163,22 @@ impl MacroProcessor {
             }
             true
         });
+    }
+
+    fn is_macro_call(element: &Element) -> bool {
+        element.prefix.as_ref().is_some_and(|x| x == "xacro") && !element.name.eq("macro")
+    }
+
+    fn is_macro_definition(element: &Element) -> bool {
+        element.prefix.as_ref().is_some_and(|x| x == "xacro") && element.name.eq("macro")
+    }
+
+    fn get_macro_name(element: &Element) -> Result<String, XacroError> {
+        Ok(element.name.clone())
+    }
+
+    fn collect_macro_args(element: &Element) -> Result<HashMap<String, String>, XacroError> {
+        Ok(element.attributes.clone())
     }
 }
 

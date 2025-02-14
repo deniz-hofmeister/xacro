@@ -1,5 +1,5 @@
 use crate::error::XacroError;
-use hashbrown::HashMap;
+use std::collections::HashMap;
 use xmltree::{
     Element,
     XMLNode::{Element as NodeElement, Text as TextElement},
@@ -46,7 +46,7 @@ impl PropertyProcessor {
         Ok(())
     }
 
-    fn substitute_properties(
+    pub(crate) fn substitute_properties(
         element: &mut Element,
         properties: &HashMap<String, String>,
     ) -> Result<(), XacroError> {
