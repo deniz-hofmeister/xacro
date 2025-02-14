@@ -10,7 +10,10 @@ pub enum XacroError {
     Include(String),
 
     #[error("Macro error: {0}")]
-    Macro(String),
+    UndefinedMacro(String),
+
+    #[error("Missing parameter '{param}' in macro '{macro_name}'")]
+    MissingParameter { macro_name: String, param: String },
 
     #[error("Macro error: {0}")]
     PropertyNotFound(String),

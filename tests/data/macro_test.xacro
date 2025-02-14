@@ -1,0 +1,12 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+ <xacro:macro name="box_link" params="name size">
+  <link name="${name}">
+   <visual>
+    <geometry>
+     <box size="${size} ${size} ${size}"/>
+    </geometry>
+   </visual>
+  </link>
+ </xacro:macro>
+ <xacro:box_link name="base_link" size="0.5"/>
+</robot>
