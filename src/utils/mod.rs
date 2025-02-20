@@ -2,7 +2,11 @@ use crate::{error::XacroError, XacroProcessor};
 use std::{collections::HashMap, fs::File};
 
 #[cfg(test)]
+use log::error;
+#[cfg(test)]
 use similar::{ChangeTag, TextDiff};
+#[cfg(test)]
+use xmltree::Element;
 
 impl XacroProcessor {
     pub(crate) fn parse_file<P: AsRef<std::path::Path>>(
@@ -40,6 +44,22 @@ pub(crate) fn pretty_print_xml(xml: &xmltree::Element) -> String {
     String::from_utf8(writer).unwrap()
 }
 
+pub(crate) fn pretty_print_hashmap<K, V>(map: &HashMap<K, V>) -> String
+where
+    K: core::fmt::Debug + core::cmp::Ord,
+    V: core::fmt::Debug,
+{
+    let mut entries: Vec<_> = map.iter().collect();
+    entries.sort_by(|a, b| a.0.cmp(b.0));
+
+    let mut output = String::from("{\n");
+    for (key, value) in entries {
+        output.push_str(&format!("  {:?}: {:?},\n", key, value));
+    }
+    output.push('}');
+    output
+}
+
 #[cfg(test)]
 pub(crate) fn print_diff(
     expected: &str,
@@ -57,18 +77,25 @@ pub(crate) fn print_diff(
     }
 }
 
-pub(crate) fn pretty_print_hashmap<K, V>(map: &HashMap<K, V>) -> String
-where
-    K: core::fmt::Debug + core::cmp::Ord,
-    V: core::fmt::Debug,
-{
-    let mut entries: Vec<_> = map.iter().collect();
-    entries.sort_by(|a, b| a.0.cmp(b.0));
+#[cfg(test)]
+pub(crate) fn assert_xml_equal(
+    result: Result<Element, XacroError>,
+    expected: Element,
+) {
+    match result {
+        Ok(actual) => {
+            let expected_str = pretty_print_xml(&expected);
+            let actual_str = pretty_print_xml(&actual);
 
-    let mut output = String::from("{\n");
-    for (key, value) in entries {
-        output.push_str(&format!("  {:?}: {:?},\n", key, value));
+            if actual != expected {
+                error!("\nXML Difference (actual vs expected):");
+                print_diff(&actual_str, &expected_str);
+                panic!("XML documents are different");
+            }
+        }
+        Err(e) => {
+            error!("Processing failed: {:?}", e);
+            panic!("Macro processing failed");
+        }
     }
-    output.push('}');
-    output
 }

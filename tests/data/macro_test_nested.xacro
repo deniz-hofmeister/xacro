@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+ <xacro:macro params="mass" name="inertial">
+  <inertial>
+   <mass value="${mass}"/>
+   <inertia ixx="1.0" iyy="1.0" izz="1.0" ixy="0.0" ixz="0.0" iyz="0.0"/>
+  </inertial>
+ </xacro:macro>
+ <xacro:macro params="name mass" name="link_with_inertia">
+  <link name="${name}">
+   <xacro:inertial mass="${mass}"/>
+  </link>
+ </xacro:macro>
+ <xacro:link_with_inertia name="heavy_link" mass="10.0"/>
+</robot>

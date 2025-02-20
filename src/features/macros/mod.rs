@@ -25,7 +25,6 @@ impl MacroProcessor {
         mut xml: Element,
     ) -> Result<Element, XacroError> {
         let mut macros = HashMap::new();
-
         println!("Input XML:");
         println!("{}", pretty_print_xml(&xml));
 
