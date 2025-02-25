@@ -146,7 +146,7 @@ impl MacroProcessor {
             substitutions.insert(param_name.clone(), value);
         }
 
-        PropertyProcessor::substitute_properties(&mut content, &substitutions)?;
+        // PropertyProcessor::substitute_properties(&mut content, &substitutions)?;
 
         Ok(content)
     }
