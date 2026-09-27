@@ -26,6 +26,12 @@ impl XacroProcessor {
 
         Ok(output_path)
     }
+
+    pub(crate) fn serialize_to_string(xml: &xmltree::Element) -> Result<String, XacroError> {
+        let mut buffer = Vec::new();
+        xml.write(&mut buffer)?;
+        Ok(String::from_utf8_lossy(&buffer).into_owned())
+    }
 }
 
 pub(crate) fn pretty_print_xml(xml: &xmltree::Element) -> String {

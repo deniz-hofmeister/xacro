@@ -31,14 +31,30 @@ impl XacroProcessor {
         path: P,
     ) -> Result<String, XacroError> {
         let xml = XacroProcessor::parse_file(&path)?;
+        let xml = self.expand(xml, path.as_ref())?;
+        XacroProcessor::serialize(xml, &path)
+    }
 
-        // 2. Process features in order
-        let xml = self.includes.process(xml, path.as_ref())?;
+    pub fn run_str(
+        &self,
+        source: &str,
+        base_dir: &std::path::Path,
+    ) -> Result<String, XacroError> {
+        let xml = xmltree::Element::parse(source.as_bytes())?;
+        // Includes resolve against the parent of the document path, so name a file inside base_dir
+        let xml = self.expand(xml, &base_dir.join("string"))?;
+        XacroProcessor::serialize_to_string(&xml)
+    }
+
+    fn expand(
+        &self,
+        xml: xmltree::Element,
+        path: &std::path::Path,
+    ) -> Result<xmltree::Element, XacroError> {
+        let xml = self.includes.process(xml, path)?;
         let xml = self.properties.process(xml)?;
         let xml = self.macros.process(xml)?;
         let xml = self.conditions.process(xml)?;
-        let xml = self.loops.process(xml)?;
-
-        XacroProcessor::serialize(xml, &path)
+        self.loops.process(xml)
     }
 }
