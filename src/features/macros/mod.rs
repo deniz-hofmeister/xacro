@@ -4,7 +4,7 @@ use crate::{
     utils::{pretty_print_hashmap, pretty_print_xml},
 };
 use std::collections::HashMap;
-use xmltree::{Element, XMLNode::Element as NodeElement};
+use xmltree::{Element, XMLNode::{Element as NodeElement, Text as TextElement}};
 
 #[derive(Debug, Clone)]
 struct MacroDefinition {
@@ -146,9 +146,37 @@ impl MacroProcessor {
             substitutions.insert(param_name.clone(), value);
         }
 
-        // PropertyProcessor::substitute_properties(&mut content, &substitutions)?;
+        Self::substitute_macro_params(&mut content, &substitutions)?;
 
         Ok(content)
+    }
+    
+    fn substitute_macro_params(
+        element: &mut Element,
+        properties: &HashMap<String, String>,
+    ) -> Result<(), XacroError> {
+        // Process attributes in current element
+        for value in element.attributes.values_mut() {
+            *value = PropertyProcessor::substitute_in_text(value, properties)?;
+        }
+        
+        // Process all child elements
+        for child in &mut element.children {
+            match child {
+                NodeElement(child_elem) => {
+                    // Don't process nested macro calls, only normal elements
+                    if !Self::is_macro_call(child_elem) {
+                        Self::substitute_macro_params(child_elem, properties)?;
+                    }
+                }
+                TextElement(text) => {
+                    *text = PropertyProcessor::substitute_in_text(text, properties)?;
+                }
+                _ => {}
+            }
+        }
+        
+        Ok(())
     }
 
     fn remove_macro_definitions(element: &mut Element) {

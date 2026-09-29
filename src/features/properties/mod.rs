@@ -65,7 +65,7 @@ impl PropertyProcessor {
         Ok(())
     }
 
-    fn substitute_in_text(
+    pub(crate) fn substitute_in_text(
         text: &str,
         properties: &HashMap<String, String>,
     ) -> Result<String, XacroError> {
@@ -100,5 +100,4 @@ impl PropertyProcessor {
     }
 }
 
-#[cfg(test)]
 mod tests;
