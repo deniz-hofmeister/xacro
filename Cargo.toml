@@ -7,7 +7,7 @@ license = "MIT"
 repository = "https://github.com/deniz-hofmeister/xacro"
 
 [dependencies]
-xml = "0.8.20"
+xml = "1.4.0"
 xmltree = "0.11.0"
 thiserror = "2.0.11"
 
