@@ -1,0 +1,151 @@
+name: tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - '**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # The gate script contributors run locally (AGENTS.md, "Definition of
+  # done"), run verbatim, so the two cannot drift apart. It is nightly-only
+  # by design; the jobs below add what it deliberately leaves to CI — the
+  # stable toolchain, the ARM64 runner, and the advisory-database audit and
+  # published-API compatibility checks.
+  gate:
+    name: gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f
+        with:
+          components: clippy, rustfmt
+          toolchain: nightly
+          # The action sets RUSTFLAGS=-D warnings by default; empty keeps the
+          # gate run identical to a local tests/test_all.sh run.
+          rustflags: ""
+      - name: Run the verification gate
+        run: tests/test_all.sh
+
+  # The AI disclosure rule (AGENTS.md, "Commits and disclosure"), checked on
+  # every new commit by the same script that runs as the local commit-msg
+  # hook. No agent environment exists here, so only AI marks in a message
+  # hold it to the rule; the local hooks are what catch an unmarked one.
+  commits:
+    name: commits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check AI disclosure trailers
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          # A new branch or a force push leaves no usable base: check HEAD alone.
+          range="$BASE..$HEAD"
+          git cat-file -e "$BASE^{commit}" 2>/dev/null || range="-1 $HEAD"
+          for commit in $(git rev-list $range); do
+            git log -1 --format=%B "$commit" > "$RUNNER_TEMP/message"
+            .githooks/commit-msg "$RUNNER_TEMP/message" || {
+              echo "::error::commit $commit fails the AI disclosure rule"
+              exit 1
+            }
+          done
+
+  formatting:
+    name: formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f
+        with:
+          components: rustfmt
+          toolchain: nightly
+      - name: Rustfmt Check
+        uses: actions-rust-lang/rustfmt@4066006ec54a31931b9b1fddfd38f2fdf2d27143
+
+  clippy:
+    name: clippy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f
+        with:
+          components: clippy
+          toolchain: stable
+      - name: Clippy
+        run: cargo clippy --all-targets -- -D warnings
+
+  tests:
+    name: tests (${{ matrix.runner }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # The full suite executes natively on both deployment
+        # architectures: x86_64 (dev machines, industrial PCs) and ARM64
+        # (Raspberry Pi, NVIDIA Jetson).
+        runner: [ubuntu-latest, ubuntu-24.04-arm]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f
+        with:
+          toolchain: stable
+      - name: Run tests
+        run: cargo test
+
+  doc:
+    name: doc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f
+        with:
+          toolchain: stable
+      - name: Build docs
+        run: cargo doc --no-deps
+        env:
+          RUSTDOCFLAGS: "-D warnings"
+
+  semver:
+    name: semver
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f
+        with:
+          toolchain: stable
+      - name: Install cargo-semver-checks
+        run: cargo install cargo-semver-checks --locked
+      # Without an explicit baseline, the tool uses the latest published
+      # release from crates.io, so the baseline advances after each release.
+      - name: Check API compatibility
+        run: cargo semver-checks check-release
+
+  security:
+    name: security
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f
+        with:
+          toolchain: stable
+      - name: Install cargo-audit
+        run: cargo install cargo-audit --locked
+      - name: Audit dependencies
+        run: cargo audit
