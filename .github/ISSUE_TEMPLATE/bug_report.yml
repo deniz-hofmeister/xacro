@@ -1,0 +1,54 @@
+name: Bug report
+description: Report a defect in the xacro crate
+labels: ["bug"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: >-
+        A self-contained xacro document that reproduces the problem, plus any
+        included files, args, and package paths it needs. The smallest
+        document that still fails is ideal.
+      render: xml
+    validations:
+      required: true
+  - type: textarea
+    id: expected-actual
+    attributes:
+      label: Expected vs actual behavior
+      description: >-
+        What you expected to happen, and what happened instead. If upstream
+        ROS 2 xacro expands the document differently, include its output.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "0.1.3"
+    validations:
+      required: true
+  - type: dropdown
+    id: failure-mode
+    attributes:
+      label: Failure mode
+      description: >-
+        How does the bug manifest? Wrong output produced silently is this
+        crate's highest-severity class of bug — flagging it correctly helps
+        triage.
+      options:
+        - "wrong output (silent)"
+        - "unexpected error"
+        - "panic"
+        - "build failure"
+        - "other"
+    validations:
+      required: true
