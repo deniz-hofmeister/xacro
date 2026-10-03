@@ -353,7 +353,7 @@ dependencies = [
  "log",
  "similar",
  "thiserror",
- "xml",
+ "xml 0.8.20",
  "xmltree",
 ]
 
@@ -367,6 +367,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "xml"
+version = "1.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2f45bb2c13fec6a6cb4c0f76a7e94839e110a14ec803ec2940777a94c347bc52"
+
+[[package]]
 name = "xml-rs"
 version = "0.8.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -374,9 +380,9 @@ checksum = "e450f9b2ed1dff33c94c12589a87338689467b9c4f5d8a5710bd09a847d2c8a7"
 
 [[package]]
 name = "xmltree"
-version = "0.11.0"
+version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b619f8c85654798007fb10afa5125590b43b088c225a25fc2fec100a9fad0fc6"
+checksum = "cbc04313cab124e498ab1724e739720807b6dc405b9ed0edc5860164d2e4ff70"
 dependencies = [
- "xml-rs",
+ "xml 1.4.0",
 ]
